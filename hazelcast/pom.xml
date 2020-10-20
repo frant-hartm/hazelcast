@@ -243,7 +243,6 @@
                                 <includes>
                                     <include>com.fasterxml.jackson.core:jackson-core</include>
                                     <include>org.snakeyaml:snakeyaml-engine</include>
-                                    <include>org.jetbrains.*:*</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
