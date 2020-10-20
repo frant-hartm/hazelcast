@@ -133,6 +133,7 @@ public final class HazelcastClient {
      * @see #getHazelcastClientByName(String) (String)
      */
     public static HazelcastInstance newHazelcastClient(ClientConfig config) {
+        config.setClusterName("jet");
         return newHazelcastClientInternal(null, resolveClientConfig(config), null);
     }
 

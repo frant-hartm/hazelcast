@@ -23,6 +23,7 @@ import com.hazelcast.sql.impl.schema.SqlCatalog;
 import com.hazelcast.sql.impl.schema.Table;
 import com.hazelcast.sql.impl.schema.TableResolver;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,8 @@ public class PlanCacheChecker {
         }
 
         // Prepare partition distribution
-        Map<UUID, PartitionIdSet> partitions = QueryUtils.createPartitionMap(nodeEngine, null, false);
+        // Map<UUID, PartitionIdSet> partitions = QueryUtils.createPartitionMap(nodeEngine, null, false);
+        Map<UUID, PartitionIdSet> partitions = Collections.emptyMap();
 
         // Do check
         planCache.check(new PlanCheckContext(objectIds, partitions));

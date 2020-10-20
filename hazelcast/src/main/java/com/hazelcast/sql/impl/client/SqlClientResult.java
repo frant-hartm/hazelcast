@@ -43,7 +43,7 @@ public class SqlClientResult implements SqlResult {
     private final QueryId queryId;
     private final SqlRowMetadata rowMetadata;
     private final ClientIterator iterator;
-    private final int cursorBufferSize;
+    private int cursorBufferSize;
     private final long updateCount;
 
     private boolean closed;
@@ -76,10 +76,30 @@ public class SqlClientResult implements SqlResult {
         }
     }
 
+    public SqlClientService getService() {
+        return service;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public QueryId getQueryId() {
+        return queryId;
+    }
+
+    public int getCursorBufferSize() {
+        return cursorBufferSize;
+    }
+
+    public void setCursorBufferSize(int cursorBufferSize) {
+        this.cursorBufferSize = cursorBufferSize;
+    }
+
     @Nonnull
     @Override
     public SqlRowMetadata getRowMetadata() {
-        checkIsRowsResult();
+        //checkIsRowsResult();
         assert rowMetadata != null;
         return rowMetadata;
     }
@@ -91,7 +111,7 @@ public class SqlClientResult implements SqlResult {
             throw new IllegalStateException("Iterator can be requested only once");
         }
 
-        checkIsRowsResult();
+        //checkIsRowsResult();
 
         iteratorAccessed = true;
         return iterator;
