@@ -46,7 +46,7 @@ public class KotlinEP<K, V> implements EntryProcessor<K, V, Object>, IdentifiedD
 
     @Override
     public int getClassId() {
-        return KotlinEPFactory.EP_CLASS_ID;
+        return KotlinEPFactory.ENTRY_PROCESSOR_CLASS_ID;
     }
 
     @Override
