@@ -31,7 +31,9 @@ public class KotlinEP<K, V> implements EntryProcessor<K, V, Object>, IdentifiedD
         try {
             Bindings bindings = kts.createBindings();
             bindings.put("key", entry.getKey());
-            bindings.put("value", entry.getValue());
+            if (entry.getValue() != null) {
+                bindings.put("value", entry.getValue());
+            }
             bindings.put("entry", entry);
             return kts.eval(script, bindings);
         } catch (ScriptException e) {
