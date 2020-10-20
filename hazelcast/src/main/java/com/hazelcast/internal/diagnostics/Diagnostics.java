@@ -119,13 +119,14 @@ public class Diagnostics {
     final String hzName;
     final HazelcastProperties properties;
     final boolean includeEpochTime;
-    final File directory;
+    File directory;
 
     DiagnosticsLog diagnosticsLog;
 
     private final ConcurrentMap<Class<? extends DiagnosticsPlugin>, DiagnosticsPlugin> pluginsMap = new ConcurrentHashMap<>();
-    private final boolean enabled;
     private final DiagnosticsOutputType outputType;
+
+    private boolean enabled;
 
     private ScheduledExecutorService scheduler;
 
@@ -234,6 +235,15 @@ public class Diagnostics {
         if (scheduler != null) {
             scheduler.shutdownNow();
         }
+    }
+
+    public void enable() {
+        logger.info("Enabling diagnostics at runtime.");
+        this.enabled = true;
+    }
+
+    public void setDirectory(String path) {
+        this.directory = new File(path);
     }
 
     private class WritePluginTask implements Runnable {

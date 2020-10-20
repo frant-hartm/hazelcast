@@ -119,7 +119,7 @@ public class NodeEngineImpl implements NodeEngine {
     private final Consumer<Packet> packetDispatcher;
     private final SplitBrainProtectionServiceImpl splitBrainProtectionService;
     private final SqlServiceImpl sqlService;
-    private final Diagnostics diagnostics;
+    private Diagnostics diagnostics;
     private final SplitBrainMergePolicyProvider splitBrainMergePolicyProvider;
     private final ConcurrencyDetection concurrencyDetection;
 
@@ -197,6 +197,13 @@ public class NodeEngineImpl implements NodeEngine {
         String name = "diagnostics-" + addressString + "-" + currentTimeMillis();
 
         return new Diagnostics(name, loggingService, getHazelcastInstance().getName(), node.getProperties());
+    }
+
+    public void restartDiagnostics(String path) {
+        diagnostics.shutdown();
+        diagnostics.enable();
+        diagnostics.setDirectory(path);
+        diagnostics.start();
     }
 
     public LoggingService getLoggingService() {
