@@ -16,12 +16,15 @@
 
 package com.hazelcast.sql.impl.calcite.opt.physical.visitor;
 
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.sql.impl.QueryException;
 import com.hazelcast.sql.impl.calcite.SqlToQueryType;
 import com.hazelcast.sql.impl.calcite.validate.HazelcastSqlOperatorTable;
 import com.hazelcast.sql.impl.expression.CastExpression;
 import com.hazelcast.sql.impl.expression.ConstantExpression;
 import com.hazelcast.sql.impl.expression.Expression;
+import com.hazelcast.sql.impl.expression.ExpressionEvalContext;
 import com.hazelcast.sql.impl.expression.SymbolExpression;
 import com.hazelcast.sql.impl.expression.math.AbsFunction;
 import com.hazelcast.sql.impl.expression.math.DivideFunction;
@@ -51,18 +54,23 @@ import com.hazelcast.sql.impl.expression.string.ConcatFunction;
 import com.hazelcast.sql.impl.expression.string.InitcapFunction;
 import com.hazelcast.sql.impl.expression.string.LikeFunction;
 import com.hazelcast.sql.impl.expression.string.LowerFunction;
+import com.hazelcast.sql.impl.expression.string.StringFunctionUtils;
 import com.hazelcast.sql.impl.expression.string.SubstringFunction;
 import com.hazelcast.sql.impl.expression.string.TrimFunction;
 import com.hazelcast.sql.impl.expression.string.UpperFunction;
+import com.hazelcast.sql.impl.row.Row;
 import com.hazelcast.sql.impl.type.QueryDataType;
 import org.apache.calcite.rex.RexCall;
 import org.apache.calcite.rex.RexLiteral;
 import org.apache.calcite.sql.SqlFunction;
+import org.apache.calcite.sql.SqlFunctionCategory;
 import org.apache.calcite.sql.SqlOperator;
 import org.apache.calcite.sql.fun.SqlStdOperatorTable;
 import org.apache.calcite.sql.fun.SqlTrimFunction;
 import org.apache.calcite.sql.type.SqlTypeName;
+import org.apache.calcite.sql.validate.SqlUserDefinedFunction;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import static com.hazelcast.sql.impl.calcite.validate.HazelcastSqlOperatorTable.CHARACTER_LENGTH;
@@ -333,11 +341,16 @@ public final class RexToExpression {
 
                     return SubstringFunction.create(input, start, length);
                 } else if (function == HazelcastSqlOperatorTable.LTRIM) {
-                   return TrimFunction.create(operands[0], null, true, false);
+                    return TrimFunction.create(operands[0], null, true, false);
                 } else if (function == HazelcastSqlOperatorTable.RTRIM) {
                     return TrimFunction.create(operands[0], null, false, true);
                 } else if (function == HazelcastSqlOperatorTable.BTRIM) {
                     return TrimFunction.create(operands[0], null, true, true);
+                }
+
+                if (function.getFunctionType().equals(SqlFunctionCategory.USER_DEFINED_FUNCTION)) {
+                    CallFunction callFunction = (CallFunction) ((SqlUserDefinedFunction) function).getFunction();
+                    return new UserFnExpression(operands[0], resultType, callFunction);
                 }
 
                 break;
@@ -347,6 +360,53 @@ public final class RexToExpression {
         }
 
         throw QueryException.error("Unsupported operator: " + operator);
+    }
+
+    public static class UserFnExpression implements Expression<Object> {
+
+        private Expression<?> operand;
+        private QueryDataType resultType;
+        private CallFunction callFunction;
+
+        public UserFnExpression(
+                Expression<?> operand,
+                QueryDataType resultType,
+                CallFunction callFunction
+        ) {
+            this.operand = operand;
+            this.resultType = resultType;
+            this.callFunction = callFunction;
+        }
+
+        public UserFnExpression() {
+        }
+
+        @Override
+        public Object eval(Row row, ExpressionEvalContext context) {
+            String value = StringFunctionUtils.asVarchar(operand, row, context);
+
+            return callFunction.call(value);
+        }
+
+        @Override
+        public QueryDataType getType() {
+            return resultType;
+        }
+
+        @Override
+        public void writeData(ObjectDataOutput out) throws IOException {
+            out.writeObject(operand);
+            out.writeObject(resultType);
+            out.writeObject(callFunction);
+        }
+
+        @Override
+        public void readData(ObjectDataInput in) throws IOException {
+            operand = in.readObject();
+            resultType = in.readObject();
+            callFunction = in.readObject();
+        }
+
     }
 
     private static Expression<?> convertBooleanLiteral(RexLiteral literal, SqlTypeName type) {

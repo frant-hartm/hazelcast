@@ -58,10 +58,10 @@ public final class UnsupportedOperationVisitor implements SqlVisitor<Void> {
     private static final Resource RESOURCE = Resources.create(Resource.class);
 
     /** A set of {@link SqlKind} values that are supported without any additional validation. */
-    private static final Set<SqlKind> SUPPORTED_KINDS;
+    public static final Set<SqlKind> SUPPORTED_KINDS;
 
     /* A set of supported operators for functions. */
-    private static final Set<SqlOperator> SUPPORTED_OPERATORS;
+    public static final Set<SqlOperator> SUPPORTED_OPERATORS;
 
     static {
         // We define all supported features explicitly instead of getting them from predefined sets of SqlKind class.
