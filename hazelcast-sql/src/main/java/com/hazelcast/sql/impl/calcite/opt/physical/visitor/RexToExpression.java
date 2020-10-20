@@ -349,7 +349,7 @@ public final class RexToExpression {
                 }
 
                 if (function.getFunctionType().equals(SqlFunctionCategory.USER_DEFINED_FUNCTION)) {
-                    CallFunction callFunction = (CallFunction) ((SqlUserDefinedFunction) function).getFunction();
+                    KotlinFunction callFunction = (KotlinFunction) ((SqlUserDefinedFunction) function).getFunction();
                     return new UserFnExpression(operands[0], resultType, callFunction);
                 }
 
@@ -366,12 +366,12 @@ public final class RexToExpression {
 
         private Expression<?> operand;
         private QueryDataType resultType;
-        private CallFunction callFunction;
+        private KotlinFunction callFunction;
 
         public UserFnExpression(
                 Expression<?> operand,
                 QueryDataType resultType,
-                CallFunction callFunction
+                KotlinFunction callFunction
         ) {
             this.operand = operand;
             this.resultType = resultType;
