@@ -40,6 +40,7 @@
         <pax.exam.version>2.6.0</pax.exam.version>
         <pax.runner.version>1.8.6</pax.runner.version>
         <javax.inject.version>1</javax.inject.version>
+        <kotlin.version>1.4.10</kotlin.version>
     </properties>
 
     <build>
@@ -242,6 +243,7 @@
                                 <includes>
                                     <include>com.fasterxml.jackson.core:jackson-core</include>
                                     <include>org.snakeyaml:snakeyaml-engine</include>
+                                    <include>org.jetbrains.*:*</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -331,6 +333,12 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-scripting-jsr223</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+
         <!-- needed for thread affinity -->
         <dependency>
             <groupId>net.openhft</groupId>
