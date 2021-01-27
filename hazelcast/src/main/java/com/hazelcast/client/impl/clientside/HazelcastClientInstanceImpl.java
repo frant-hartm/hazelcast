@@ -63,6 +63,7 @@ import com.hazelcast.collection.ISet;
 import com.hazelcast.collection.impl.list.ListService;
 import com.hazelcast.collection.impl.queue.QueueService;
 import com.hazelcast.collection.impl.set.SetService;
+import com.hazelcast.compute.ComputeEngine;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
@@ -132,6 +133,7 @@ import com.hazelcast.transaction.TransactionException;
 import com.hazelcast.transaction.TransactionOptions;
 import com.hazelcast.transaction.TransactionalTask;
 import com.hazelcast.transaction.impl.xa.XAService;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -822,6 +824,12 @@ public class HazelcastClientInstanceImpl implements HazelcastInstance, Serializa
     @Override
     public SqlService getSql() {
         return sqlService;
+    }
+
+    @NotNull
+    @Override
+    public ComputeEngine getComputeEngine() {
+        throw new UnsupportedOperationException("compute engine not available yet on the client");
     }
 
     public void onClusterChange() {

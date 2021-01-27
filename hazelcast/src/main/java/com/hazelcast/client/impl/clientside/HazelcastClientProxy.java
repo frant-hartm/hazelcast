@@ -25,6 +25,7 @@ import com.hazelcast.cluster.Cluster;
 import com.hazelcast.collection.IList;
 import com.hazelcast.collection.IQueue;
 import com.hazelcast.collection.ISet;
+import com.hazelcast.compute.ComputeEngine;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
@@ -54,6 +55,7 @@ import com.hazelcast.transaction.TransactionContext;
 import com.hazelcast.transaction.TransactionException;
 import com.hazelcast.transaction.TransactionOptions;
 import com.hazelcast.transaction.TransactionalTask;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -317,5 +319,11 @@ public class HazelcastClientProxy implements HazelcastInstance, SerializationSer
     @Override
     public SqlService getSql() {
         return getClient().getSql();
+    }
+
+    @NotNull
+    @Override
+    public ComputeEngine getComputeEngine() {
+        return getClient().getComputeEngine();
     }
 }

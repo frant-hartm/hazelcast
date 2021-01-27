@@ -16,7 +16,9 @@
 
 package com.hazelcast.osgi;
 
+import com.hazelcast.compute.ComputeEngine;
 import com.hazelcast.core.HazelcastInstance;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Contract point for {@link com.hazelcast.core.HazelcastInstance} implementations based on OSGi service.

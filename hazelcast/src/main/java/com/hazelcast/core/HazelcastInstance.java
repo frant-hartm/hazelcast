@@ -25,6 +25,7 @@ import com.hazelcast.cluster.Member;
 import com.hazelcast.collection.IList;
 import com.hazelcast.collection.IQueue;
 import com.hazelcast.collection.ISet;
+import com.hazelcast.compute.ComputeEngine;
 import com.hazelcast.config.Config;
 import com.hazelcast.cp.CPSubsystem;
 import com.hazelcast.crdt.pncounter.PNCounter;
@@ -466,6 +467,9 @@ public interface HazelcastInstance {
      */
     @Beta
     @Nonnull SqlService getSql();
+
+    @Nonnull
+    ComputeEngine getComputeEngine();
 
     /**
      * Shuts down this HazelcastInstance. For more information see {@link com.hazelcast.core.LifecycleService#shutdown()}.
