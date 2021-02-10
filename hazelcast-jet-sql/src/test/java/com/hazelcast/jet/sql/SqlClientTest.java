@@ -82,7 +82,7 @@ public class SqlClientTest extends SqlTestSupport {
         JetInstance client = factory().newClient();
         SqlService sqlService = client.getSql();
 
-        sqlService.execute("CREATE MAPPING t TYPE " + FailingTestSqlConnector.TYPE_NAME);
+        sqlService.execute("CREATE MAPPING t TYPE " + FailingTestSqlConnector.TYPE_NAME).updateCount();
         assertThatThrownBy(
                 () -> {
                     SqlResult result = sqlService.execute("SELECT * FROM t");

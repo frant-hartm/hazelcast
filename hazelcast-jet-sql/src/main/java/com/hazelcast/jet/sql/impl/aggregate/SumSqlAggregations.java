@@ -40,14 +40,10 @@ public final class SumSqlAggregations {
 
     private static SqlAggregation from(QueryDataType operandType) {
         switch (operandType.getTypeFamily()) {
-            case TINYINT:
-            case SMALLINT:
-            case INTEGER:
             case BIGINT:
                 return new SumLongSqlAggregation();
             case DECIMAL:
                 return new SumDecimalSqlAggregation();
-            case REAL:
             case DOUBLE:
                 return new SumDoubleSqlAggregation();
             default:

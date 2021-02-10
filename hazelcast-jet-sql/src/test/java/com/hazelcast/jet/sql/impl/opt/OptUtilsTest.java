@@ -30,7 +30,6 @@ import org.apache.calcite.rel.type.RelDataTypeFieldImpl;
 import org.apache.calcite.rel.type.RelRecordType;
 import org.apache.calcite.rel.type.StructKind;
 import org.apache.calcite.rex.RexLiteral;
-import org.apache.calcite.sql.type.SqlTypeFactoryImpl;
 import org.apache.calcite.sql.type.SqlTypeName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +50,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class OptUtilsTest {
 
-    private static final SqlTypeFactoryImpl TYPE_FACTORY = HazelcastTypeFactory.INSTANCE;
+    private static final HazelcastTypeFactory TYPE_FACTORY = HazelcastTypeFactory.INSTANCE;
     private static final HazelcastRexBuilder REX_BUILDER = new HazelcastRexBuilder(TYPE_FACTORY);
 
     @Mock

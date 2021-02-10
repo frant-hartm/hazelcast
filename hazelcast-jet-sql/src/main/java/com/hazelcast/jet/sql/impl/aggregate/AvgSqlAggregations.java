@@ -40,18 +40,14 @@ public final class AvgSqlAggregations {
 
     private static SqlAggregation from(QueryDataType operandType) {
         switch (operandType.getTypeFamily()) {
-            case TINYINT:
-            case SMALLINT:
-            case INTEGER:
             case BIGINT:
                 return new AvgLongSqlAggregation();
             case DECIMAL:
                 return new AvgDecimalSqlAggregation();
-            case REAL:
             case DOUBLE:
                 return new AvgDoubleSqlAggregation();
             default:
-                throw QueryException.error("Unsupported operand type: " + operandType);
+                throw QueryException.error("Unexpected operand type: " + operandType);
         }
     }
 

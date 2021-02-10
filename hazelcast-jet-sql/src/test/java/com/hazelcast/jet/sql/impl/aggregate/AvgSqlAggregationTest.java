@@ -36,12 +36,8 @@ public class AvgSqlAggregationTest {
     @SuppressWarnings("unused")
     private Object[] types() {
         return new Object[]{
-                new Object[]{QueryDataType.TINYINT},
-                new Object[]{QueryDataType.SMALLINT},
-                new Object[]{QueryDataType.INT},
                 new Object[]{QueryDataType.BIGINT},
                 new Object[]{QueryDataType.DECIMAL},
-                new Object[]{QueryDataType.REAL},
                 new Object[]{QueryDataType.DOUBLE}
         };
     }
@@ -57,34 +53,18 @@ public class AvgSqlAggregationTest {
     @SuppressWarnings("unused")
     private Object[] values() {
         return new Object[]{
-                new Object[]{QueryDataType.TINYINT, (byte) 1, (byte) 2, new BigDecimal("1.5")},
-                new Object[]{QueryDataType.SMALLINT, (short) 1, (short) 2, new BigDecimal("1.5")},
-                new Object[]{QueryDataType.INT, 1, 2, new BigDecimal("1.5")},
                 new Object[]{QueryDataType.BIGINT, 1L, 2L, new BigDecimal("1.5")},
                 new Object[]{QueryDataType.DECIMAL, new BigDecimal(1), new BigDecimal(2),
                         new BigDecimal("1.5")},
                 new Object[]{QueryDataType.DECIMAL, new BigDecimal("9223372036854775808998"),
                         new BigDecimal("9223372036854775808999"), new BigDecimal("9223372036854775808998.5")},
-                new Object[]{QueryDataType.REAL, 1F, 2F, 1.5D},
                 new Object[]{QueryDataType.DOUBLE, 1D, 2D, 1.5D},
-                new Object[]{QueryDataType.TINYINT, (byte) 1, null, new BigDecimal(1)},
-                new Object[]{QueryDataType.TINYINT, null, (byte) 1, new BigDecimal(1)},
-                new Object[]{QueryDataType.TINYINT, null, null, null},
-                new Object[]{QueryDataType.SMALLINT, (short) 1, null, new BigDecimal(1)},
-                new Object[]{QueryDataType.SMALLINT, null, (short) 1, new BigDecimal(1)},
-                new Object[]{QueryDataType.SMALLINT, null, null, null},
-                new Object[]{QueryDataType.INT, 1, null, new BigDecimal(1)},
-                new Object[]{QueryDataType.INT, null, 1, new BigDecimal(1)},
-                new Object[]{QueryDataType.INT, null, null, null},
                 new Object[]{QueryDataType.BIGINT, 1L, null, new BigDecimal(1)},
                 new Object[]{QueryDataType.BIGINT, null, 1L, new BigDecimal(1)},
                 new Object[]{QueryDataType.BIGINT, null, null, null},
                 new Object[]{QueryDataType.DECIMAL, new BigDecimal(1), null, new BigDecimal(1)},
                 new Object[]{QueryDataType.DECIMAL, null, new BigDecimal(1), new BigDecimal(1)},
                 new Object[]{QueryDataType.DECIMAL, null, null, null},
-                new Object[]{QueryDataType.REAL, 1F, null, 1D},
-                new Object[]{QueryDataType.REAL, null, 1F, 1D},
-                new Object[]{QueryDataType.REAL, null, null, null},
                 new Object[]{QueryDataType.DOUBLE, 1D, null, 1D},
                 new Object[]{QueryDataType.DOUBLE, null, 1D, 1D},
                 new Object[]{QueryDataType.DOUBLE, null, null, null},
@@ -123,11 +103,11 @@ public class AvgSqlAggregationTest {
 
     @Test
     public void test_accumulateDistinct() {
-        SqlAggregation aggregation = AvgSqlAggregations.from(QueryDataType.INT, true);
+        SqlAggregation aggregation = AvgSqlAggregations.from(QueryDataType.BIGINT, true);
         aggregation.accumulate(null);
-        aggregation.accumulate(1);
-        aggregation.accumulate(1);
-        aggregation.accumulate(2);
+        aggregation.accumulate(1L);
+        aggregation.accumulate(1L);
+        aggregation.accumulate(2L);
 
         assertThat(aggregation.collect()).isEqualTo(new BigDecimal("1.5"));
     }
@@ -148,7 +128,7 @@ public class AvgSqlAggregationTest {
 
     @Test
     public void test_serialization() {
-        SqlAggregation original = AvgSqlAggregations.from(QueryDataType.TINYINT, false);
+        SqlAggregation original = AvgSqlAggregations.from(QueryDataType.BIGINT, false);
         original.accumulate((byte) 1);
 
         InternalSerializationService ss = new DefaultSerializationServiceBuilder().build();
