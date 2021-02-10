@@ -75,6 +75,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <scope>test</scope>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+        </dependency>
+
         <!-- TEST -->
         <dependency>
             <groupId>com.hazelcast.jet</groupId>

@@ -22,8 +22,8 @@
     <artifactId>hazelcast-jet-python</artifactId>
 
     <parent>
-        <groupId>com.hazelcast</groupId>
-        <artifactId>hazelcast-root</artifactId>
+        <groupId>com.hazelcast.jet</groupId>
+        <artifactId>hazelcast-jet-extensions</artifactId>
         <version>5.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -120,7 +120,7 @@
                                 <configuration>
                                     <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
                                     <pluginId>grpc-python</pluginId>
-                                    <pluginExecutable>${grpc_python_plugin_path}</pluginExecutable>
+                                    <pluginExecutable>${tU}</pluginExecutable>
                                     <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
                                     <clearOutputDirectory>false</clearOutputDirectory>
                                 </configuration>
